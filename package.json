@@ -1,0 +1,26 @@
+{
+  "name": "number_serialization",
+  "version": "1.0.0",
+  "description": "Compact serialization/deserialization of integer arrays (1..300) using ASCII-only encoding.",
+  "main": "build/numberSerializer.js",
+  "types": "build/numberSerializer.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest --runInBand"
+  },
+  "keywords": [
+    "serialization",
+    "compression",
+    "numbers",
+    "typescript"
+  ],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "jest": "^30.2.0",
+    "ts-jest": "^29.4.6",
+    "typescript": "^5.9.3"
+  }
+}
