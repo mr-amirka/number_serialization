@@ -245,6 +245,27 @@ For **uniformly random** data (few duplicates), expected compressed length is ro
 
 Actual ratios depend on the distribution of values; see Jest test logs (baseline: `numbers.join(',')`).
 
+### Minimum and maximum compression
+
+In the test suite, the **compression ratio** is defined as `compressed.length / original.length` (baseline = comma-separated decimals). **Lower ratio means better compression.**
+
+- **Maximum compression (best case)**  
+  The best compression occurs when the multiset has **many repetitions** of the same value. Run-length encoding then replaces long runs with a short `(count)` plus one value character.
+
+  - Example: 1000 copies of the value `1`.  
+    - Simple: `1,1,1,...,1` → length 1999.  
+    - Compressed: `(count)1` where `count` is 1000 in base-89 (a few characters) → length on the order of 5–6 characters.  
+  - So the ratio can be as low as **~0.003** (compressed/original), i.e. the simple string can be **hundreds of times longer** than the compressed string. The more repeated values and the higher the count, the better the compression.
+
+- **Minimum compression (worst case)**  
+  The least compression (ratio closest to 1) occurs when there are **no repetitions** and values use the **most characters** in the encoding (two characters per value, i.e. 90..300), while the simple representation uses **few digits** (e.g. two-digit numbers 10..99).
+
+  - Example: \(n\) distinct values in 90..99 (each encoded as 2 chars, simple as 2 digits + comma).  
+    - Simple: \(3n - 1\).  
+    - Compressed: \(2n\).  
+    - Ratio: \(2n / (3n-1) \to 2/3 \approx 0.67\) as \(n\) grows.  
+  - For one-digit values (1..9), compressed uses 1 char each and simple uses 1 digit + comma, so ratio \(\approx 0.5\). For three-digit values (100..300), compressed is still 2 chars per value and simple is 4n-1, so ratio \(\approx 0.5\). So in practice the **worst-case ratio is around 0.5–0.67**: the compressed string is always at least about half the length of the simple string, and can be much shorter when there are many duplicates.
+
 ---
 
 ## Notes and limitations
